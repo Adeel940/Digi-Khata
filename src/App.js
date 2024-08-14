@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Input from "./Input";
+import TransactionHistoryDisplay from "./DisplayTransactionHistory";
 import "./App.css"
 function App() {
   const [balance, setBalance] = useState(0);
@@ -6,11 +8,7 @@ function App() {
   const [category, setCategory] = useState("Credit");
   const [des, setDes]= useState("");
   const [transactions, setTransactions] = useState([]);
-
-  const handleAmountChange = (e) => setAmount(e.target.value);
-  const handleDesChange = (e)=> setDes(e.target.value);
-  const handleCategoryChange = (e) => setCategory(e.target.value);
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -24,6 +22,7 @@ function App() {
     if (category === "Debit") {
       newBalance -= parsedAmount;
     } else {
+
       newBalance += parsedAmount;
     }
 
@@ -50,44 +49,13 @@ function App() {
     <div className="container">
       <h1>Digi Khata</h1>
       <h2>Current Balance in Rs: {balance}</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="number"
-          value={amount}
-          onChange={handleAmountChange}
-          placeholder="Enter amount"
-        />
-        <input
-          type="text"
-          value={des}
-          onChange={handleDesChange}
-          placeholder="Enter Descrition"
-        />
 
-        <select value={category} onChange={handleCategoryChange}>
-          <option value="Debit">Debit</option>
-          <option value="Credit">Credit</option>
-        </select>
-        <button type="submit">Add Transaction</button>
-      </form>
+      <Input setAmount={setAmount} setDes={setDes} setCategory={setCategory}
+      handleSubmit={handleSubmit} amount={amount} des={des} category={category}
+      />
       <div>
         <h3>Transaction History:</h3>
-        <ul>
-            {transactions.map((transaction) => (
-              <li
-                key={transaction.id}
-                className={transaction.category.toLowerCase()}
-              >
-                <div>
-                  <span>{transaction.category} of Rs: {transaction.amount}</span>
-                  <small>  {transaction.des}</small>
-                  <br />
-                  <small>{transaction.date} at {transaction.time}</small>
-                </div>
-              </li>
-            ))}
-          </ul>
-  
+      <TransactionHistoryDisplay transactions={transactions}/>
       </div>
     </div>
   );  
